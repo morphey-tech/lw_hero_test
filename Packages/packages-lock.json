@@ -30,13 +30,6 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
-    "com.neuecc.unirx": {
-      "version": "7.1.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://package.openupm.com"
-    },
     "com.unity.addressables": {
       "version": "2.4.3",
       "depth": 2,
