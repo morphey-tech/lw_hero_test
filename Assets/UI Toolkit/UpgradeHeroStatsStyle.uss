@@ -5,12 +5,10 @@
     padding: 6px 12px;
     border-width: 0;
     font-size: 14px;
-    font-weight: bold;
     justify-content: center;
     align-items: center;
     transition-property: background-color, transform;
     transition-duration: 100ms;
-    cursor: pointer;
 }
 
 .label {
