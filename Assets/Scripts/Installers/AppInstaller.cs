@@ -22,7 +22,7 @@ namespace Installers
             statsModel.Add(new HeroHealthStat());
             statsModel.Add(new HeroDamageStat());
             statsModel.Add(new HeroMovementSpeedStat());
-            builder.RegisterInstance(new HeroStatsModel());
+            builder.RegisterInstance(statsModel);
             builder.Register<UpgradeHeroStatsUseCase>(Lifetime.Scoped).AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<IUpgradeHeroStatsView>();
             builder.Register<HeroStatsPresenter>(Lifetime.Scoped).AsImplementedInterfaces();

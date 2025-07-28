@@ -4,8 +4,8 @@ using Domain.Gameplay.Models;
 
 namespace ContractsInterfaces
 {
-    public interface IUpgradeHeroStatsView : IView
+    public interface IUpgradeHeroStatsView
     {
-        void Refresh(IReadOnlyDictionary<Type, IHeroStat> stats);
+        void Refresh(KeyValuePair<Type, IHeroStat> stats);
     }
 }

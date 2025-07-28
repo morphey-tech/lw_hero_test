@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Domain.Gameplay.Models;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Presentation.Gameplay.View
 {
@@ -19,32 +20,23 @@ namespace Presentation.Gameplay.View
         [field: SerializeField]
         public TextMeshProUGUI MovementSpeed { get; private set; }
 
-        UniTask IView.Show()
-        {
-            throw new NotImplementedException();
-        }
+        [field: SerializeField]
+        public Button UpgradeButton { get; private set; }
 
-        UniTask IView.Hide()
+        
+        void IUpgradeHeroStatsView.Refresh(KeyValuePair<Type, IHeroStat> stats)
         {
-            throw new NotImplementedException();
-        }
-
-        void IUpgradeHeroStatsView.Refresh(IReadOnlyDictionary<Type, IHeroStat> stats)
-        {
-            foreach (KeyValuePair<Type,IHeroStat> pair in stats)
+            switch (stats.Value)
             {
-                switch (pair.Value)
-                {
-                    case HeroHealthStat health:
-                        Health.text = $"Health:{health.Amount.ToString()}";
-                        break;
-                    case HeroDamageStat damage:
-                        Damage.text = $"Damage:{damage.Amount.ToString()}";
-                        break;
-                    case HeroMovementSpeedStat movementSpeed:
-                        MovementSpeed.text = $"Movement Speed:{movementSpeed.Amount.ToString()}";
-                        break;
-                }
+                case HeroHealthStat health:
+                    Health.text = $"Health:{health.Amount.ToString()}";
+                    break;
+                case HeroDamageStat damage:
+                    Damage.text = $"Damage:{damage.Amount.ToString()}";
+                    break;
+                case HeroMovementSpeedStat movementSpeed:
+                    MovementSpeed.text = $"Movement Speed:{movementSpeed.Amount.ToString()}";
+                    break;
             }
         }
     }
