@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UIToolKit/UpgradeHeroStatsView.uss?fileID=7433441132597879392&amp;guid=f002c712264602340b8a1624f8342d29&amp;type=3#UpgradeHeroStatsView" />
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:VisualElement name="Container" style="flex-grow: 0; flex-shrink: 0; width: 50%; height: 30%; background-color: rgb(154, 54, 54); flex-direction: column; flex-wrap: nowrap; align-self: center; bottom: 350px; position: relative; top: 350px; left: -30px; right: 30px;">
+            <ui:VisualElement name="StatsContent" style="flex-grow: 1; flex-wrap: nowrap; flex-direction: row; align-self: center; align-items: stretch; align-content: center; justify-content: flex-start; width: 948px;">
+                <ui:Label text="Health: 100" name="HealthStat" style="flex-shrink: 1; flex-grow: 1; -unity-text-align: middle-center; flex-direction: column; white-space: normal; font-size: 24px;" />
+                <ui:Label text="Damage: 100" name="DamageStat" style="flex-grow: 1; flex-shrink: 1; -unity-text-align: middle-center; font-size: 24px;" />
+                <ui:Label text="MS: 100" name="MovementSpeedStat" style="flex-grow: 1; flex-shrink: 1; -unity-text-align: middle-center; font-size: 24px;" />
+            </ui:VisualElement>
+            <ui:Button text="Upgrade" name="UpgradeButton" style="height: 70px; font-size: 24px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
