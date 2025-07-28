@@ -43,16 +43,31 @@ namespace Presentation.Gameplay.View
             {
                 case EnumHeroStatType.HEALTH:
                     _healthLabel.text = $"Health:{amount.ToString()}";
+                    DoPunchAnimation(_healthLabel);
                     break;
                 case EnumHeroStatType.DAMAGE:
                     _damageLabel.text = $"Damage:{amount.ToString()}";
+                    DoPunchAnimation(_damageLabel);
                     break;
                 case EnumHeroStatType.MOVEMENT_SPEED:
                     _msLabel.text = $"MS:{amount.ToString()}";
+                    DoPunchAnimation(_msLabel);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+        }
+
+        private static void DoPunchAnimation(VisualElement target)
+        {
+            const float duration = 0.1f;
+            float time = 0f;
+            target.schedule.Execute(() =>
+            {
+                time += Time.deltaTime;
+                float scale = 1f + 0.02f * Mathf.Sin(Mathf.PI * time / duration);
+                target.style.scale = new StyleScale(Vector2.one * scale);
+            }).Every(3).Until(() => time >= duration);
         }
     }
 }
