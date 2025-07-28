@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ContractsInterfaces;
-using Cysharp.Threading.Tasks;
 using Domain.Gameplay.Models;
 using TMPro;
 using UnityEngine;
@@ -11,6 +10,8 @@ namespace Presentation.Gameplay.View
 {
     public sealed class HeroStatsView : MonoBehaviour, IUpgradeHeroStatsView
     {
+        public event Action OnUpgradeButtonClick;
+        
         [field: SerializeField]
         public TextMeshProUGUI Health { get; private set; }
         
@@ -23,7 +24,17 @@ namespace Presentation.Gameplay.View
         [field: SerializeField]
         public Button UpgradeButton { get; private set; }
 
+        private void Awake()
+        {
+            UpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick?.Invoke());
+        }
+
+        private void OnDestroy()
+        {
+            UpgradeButton.onClick.RemoveAllListeners();
+        }
         
+
         void IUpgradeHeroStatsView.Refresh(KeyValuePair<Type, IHeroStat> stats)
         {
             switch (stats.Value)
