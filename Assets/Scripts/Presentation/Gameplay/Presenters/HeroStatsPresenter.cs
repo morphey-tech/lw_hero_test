@@ -1,7 +1,27 @@
-﻿namespace Presentation.Gameplay.Presenters
+﻿using System;
+using JetBrains.Annotations;
+using VContainer;
+using VContainer.Unity;
+
+namespace Presentation.Gameplay.Presenters
 {
-    public class HeroStatsPresenter
+    [UsedImplicitly]
+    public sealed class HeroStatsPresenter : IInitializable, IDisposable
     {
+        [Inject]
+        private HeroStatsPresenter()
+        {
+            
+        }
         
+        void IInitializable.Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDisposable.Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
