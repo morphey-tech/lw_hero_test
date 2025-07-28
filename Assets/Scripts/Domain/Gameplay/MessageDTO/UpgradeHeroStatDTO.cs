@@ -2,7 +2,7 @@
 
 namespace Domain.Gameplay.MessageDTO
 {
-    public sealed class HeroStatAddDTO
+    public sealed class UpgradeHeroStatDTO
     {
         public IHeroStat Stat { get; set; }
     }
