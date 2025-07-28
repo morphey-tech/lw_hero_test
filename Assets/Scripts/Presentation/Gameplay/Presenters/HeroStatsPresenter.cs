@@ -6,7 +6,6 @@ using Domain.Gameplay.Models;
 using JetBrains.Annotations;
 using MessagePipe;
 using R3;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -18,6 +17,7 @@ namespace Presentation.Gameplay.Presenters
         private readonly HeroStatsModel _model;
         private readonly IUpgradeHeroStatsView _view;
         private readonly IPublisher<string, UpgradeHeroStatDTO> _heroStatsUpgradePublisher;
+        
         private IDisposable _disposable;
         
         [Inject]
@@ -52,30 +52,17 @@ namespace Presentation.Gameplay.Presenters
 
         private void OnUpgradeButtonClick()
         {
-            _heroStatsUpgradePublisher.Publish(UpgradeHeroStatDTO.StatAdded, 
-                new UpgradeHeroStatDTO
-                {
-                    Stat = new HeroHealthStat
-                    {
-                        Amount = 10
-                    }
-                });
-            _heroStatsUpgradePublisher.Publish(UpgradeHeroStatDTO.StatAdded, 
-                new UpgradeHeroStatDTO
-                {
-                    Stat = new HeroDamageStat
-                    {
-                        Amount = 10
-                    }
-                });
-            _heroStatsUpgradePublisher.Publish(UpgradeHeroStatDTO.StatAdded, 
-                new UpgradeHeroStatDTO
-                {
-                    Stat = new HeroMovementSpeedStat
-                    {
-                        Amount = 10
-                    }
-                });
+            PublishStatAddedMessage(new HeroHealthStat{Amount = 10});
+            PublishStatAddedMessage(new HeroDamageStat{Amount = 10});
+            PublishStatAddedMessage(new HeroMovementSpeedStat{Amount = 10});
+        }
+
+        private void PublishStatAddedMessage(IHeroStat value)
+        {
+            _heroStatsUpgradePublisher.Publish(UpgradeHeroStatDTO.StatAdded, new UpgradeHeroStatDTO
+            {
+                Stat = value
+            });
         }
     }
 }
