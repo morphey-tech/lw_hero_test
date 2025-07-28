@@ -1,5 +1,7 @@
 ﻿using ContractsInterfaces;
+using Domain.Gameplay.MessageDTO;
 using Domain.Gameplay.Models;
+using MessagePipe;
 using Presentation.Gameplay.Presenters;
 using UseCases;
 using VContainer;
@@ -11,6 +13,11 @@ namespace Installers
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            MessagePipeOptions messagePipeOptions =
+                builder.RegisterMessagePipe(o => { o.EnableCaptureStackTrace = true; });
+            builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
+            builder.RegisterMessageBroker<string, UpgradeHeroStatDTO>(messagePipeOptions);
+
             HeroStatsModel statsModel = new();
             statsModel.Add(new HeroHealthStat());
             statsModel.Add(new HeroDamageStat());
