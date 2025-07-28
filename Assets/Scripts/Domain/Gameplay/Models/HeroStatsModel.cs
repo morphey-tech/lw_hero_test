@@ -5,29 +5,29 @@ namespace Domain.Gameplay.Models
 {
     public sealed class HeroStatsModel
     {
-        public IReadOnlyObservableDictionary<Type, IHeroStat> Stats => _stats;
+        public IReadOnlyObservableDictionary<EnumHeroStatType, IHeroStat> Stats => _stats;
         
-        private readonly ObservableDictionary<Type, IHeroStat> _stats = new();
+        private readonly ObservableDictionary<EnumHeroStatType, IHeroStat> _stats = new();
 
-        public void Add<T>(in T stat) where T : IHeroStat
+        public void Add(IHeroStat stat)
         {
-            if (stat.Amount < 0)
+            if (_stats.TryGetValue(stat.Type, out IHeroStat existed))
             {
-                throw new InvalidOperationException("Can't increase stat by value equal or less than zero.");
-            }
-            if (_stats.ContainsKey(typeof(T)))
-            {
-                _stats[typeof(T)].Amount += stat.Amount;
+                existed.Amount.Value += stat.Amount.Value;
             }
             else
             {
-                _stats.Add(typeof(T), stat);
+                if (stat.Amount.Value < 0)
+                {
+                    throw new InvalidOperationException("Can't add stat with negative value.");
+                }
+                _stats.Add(stat.Type, stat);
             }
         }
 
-        public T Get<T>(T stat) where T : IHeroStat
+        public IHeroStat Get(EnumHeroStatType statType)
         {
-            return _stats.TryGetValue(typeof(T), out IHeroStat result) ? (T)result : default;
+            return _stats.TryGetValue(statType, out IHeroStat result) ? result : default;
         }
     }
 }

@@ -1,53 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
 using ContractsInterfaces;
 using Domain.Gameplay.Models;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Presentation.Gameplay.View
 {
+    [RequireComponent(typeof(UIDocument))]
     public sealed class HeroStatsView : MonoBehaviour, IUpgradeHeroStatsView
     {
         public event Action OnUpgradeButtonClick;
-        
-        [field: SerializeField]
-        public TextMeshProUGUI Health { get; private set; }
-        
-        [field: SerializeField]
-        public TextMeshProUGUI Damage { get; private set; }
-        
-        [field: SerializeField]
-        public TextMeshProUGUI MovementSpeed { get; private set; }
 
-        [field: SerializeField]
-        public Button UpgradeButton { get; private set; }
-
+        private VisualElement _root;
+        private Label _healthLabel;
+        private Label _damageLabel;
+        private Label _msLabel;
+        private Button _upgradeButton;
+        
         private void Awake()
         {
-            UpgradeButton.onClick.AddListener(() => OnUpgradeButtonClick?.Invoke());
+            _root = GetComponent<UIDocument>().rootVisualElement;
+            _healthLabel = _root.Q<Label>("HealthStat");
+            _damageLabel = _root.Q<Label>("DamageStat");
+            _msLabel = _root.Q<Label>("MovementSpeedStat");
+            _upgradeButton = _root.Q<Button>("UpgradeButton");
+            _upgradeButton.clicked += OnClick;
         }
 
         private void OnDestroy()
         {
-            UpgradeButton.onClick.RemoveAllListeners();
+            _upgradeButton.clicked -= OnClick;
         }
-        
 
-        void IUpgradeHeroStatsView.Refresh(KeyValuePair<Type, IHeroStat> stats)
+        private void OnClick()
         {
-            switch (stats.Value)
+            OnUpgradeButtonClick?.Invoke();
+        }
+
+        void IUpgradeHeroStatsView.Refresh(int amount, EnumHeroStatType type)
+        {
+            switch (type)
             {
-                case HeroHealthStat health:
-                    Health.text = $"Health:{health.Amount.ToString()}";
+                case EnumHeroStatType.HEALTH:
+                    _healthLabel.text = $"Health:{amount.ToString()}";
                     break;
-                case HeroDamageStat damage:
-                    Damage.text = $"Damage:{damage.Amount.ToString()}";
+                case EnumHeroStatType.DAMAGE:
+                    _damageLabel.text = $"Damage:{amount.ToString()}";
                     break;
-                case HeroMovementSpeedStat movementSpeed:
-                    MovementSpeed.text = $"Movement Speed:{movementSpeed.Amount.ToString()}";
+                case EnumHeroStatType.MOVEMENT_SPEED:
+                    _msLabel.text = $"MS:{amount.ToString()}";
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
     }

@@ -1,0 +1,6 @@
+.button {
+}
+
+.label {
+    background-color: rgb(156, 46, 46);
+}
