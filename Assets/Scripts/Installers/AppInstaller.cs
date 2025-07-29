@@ -19,9 +19,9 @@ namespace Installers
             builder.RegisterMessageBroker<string, UpgradeHeroStatDTO>(messagePipeOptions);
 
             HeroStatsModel statsModel = new();
-            statsModel.Add(new HeroHealthStat());
-            statsModel.Add(new HeroDamageStat());
-            statsModel.Add(new HeroMovementSpeedStat());
+            statsModel.Add(new HeroHealthStat(0));
+            statsModel.Add(new HeroDamageStat(0));
+            statsModel.Add(new HeroMovementSpeedStat(0));
             builder.RegisterInstance(statsModel);
             builder.Register<UpgradeHeroStatsUseCase>(Lifetime.Scoped).AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<IUpgradeHeroStatsView>();

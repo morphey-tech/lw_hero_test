@@ -34,9 +34,9 @@ namespace Presentation.Gameplay.Presenters
             _view.OnUpgradeButtonClick += OnUpgradeButtonClick;
             foreach ((EnumHeroStatType type, IHeroStat stat) in _model.Stats)
             {
-                //TODO: remove closure
+                EnumHeroStatType capturedType = type;
                 stat.Amount
-                    .Subscribe(x => OnHeroStatsUpgraded(x, type))
+                    .Subscribe(x => OnHeroStatsUpgraded(x, capturedType))
                     .AddTo(_disposable);
             }
         }
@@ -54,9 +54,9 @@ namespace Presentation.Gameplay.Presenters
 
         private void OnUpgradeButtonClick()
         {
-            PublishStatAddedMessage(new HeroHealthStat{Amount = new ReactiveProperty<int>(10)});
-            PublishStatAddedMessage(new HeroDamageStat{Amount = new ReactiveProperty<int>(5)});
-            PublishStatAddedMessage(new HeroMovementSpeedStat{Amount =  new ReactiveProperty<int>(3)});
+            PublishStatAddedMessage(new HeroHealthStat(10));
+            PublishStatAddedMessage(new HeroDamageStat(5));
+            PublishStatAddedMessage(new HeroMovementSpeedStat(3));
         }
 
         private void PublishStatAddedMessage(IHeroStat value)

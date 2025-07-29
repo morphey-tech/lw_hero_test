@@ -3,6 +3,7 @@ using Domain.Gameplay.MessageDTO;
 using Domain.Gameplay.Models;
 using JetBrains.Annotations;
 using MessagePipe;
+using VContainer;
 using VContainer.Unity;
 
 namespace UseCases
@@ -15,6 +16,7 @@ namespace UseCases
 
         private IDisposable _disposable;
 
+        [Inject]
         private UpgradeHeroStatsUseCase(HeroStatsModel model, ISubscriber<string, UpgradeHeroStatDTO> heroStatsSubscriber)
         {
             _model = model;

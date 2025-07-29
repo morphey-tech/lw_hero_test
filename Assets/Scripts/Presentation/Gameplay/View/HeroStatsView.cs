@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ContractsInterfaces;
 using Domain.Gameplay.Models;
 using UnityEngine;
@@ -12,17 +13,16 @@ namespace Presentation.Gameplay.View
         public event Action OnUpgradeButtonClick;
 
         private VisualElement _root;
-        private Label _healthLabel;
-        private Label _damageLabel;
-        private Label _msLabel;
         private Button _upgradeButton;
+        
+        private readonly Dictionary<EnumHeroStatType, Label> _statLabels = new();
         
         private void Awake()
         {
             _root = GetComponent<UIDocument>().rootVisualElement;
-            _healthLabel = _root.Q<Label>("HealthStat");
-            _damageLabel = _root.Q<Label>("DamageStat");
-            _msLabel = _root.Q<Label>("MovementSpeedStat");
+            _statLabels[EnumHeroStatType.HEALTH] = _root.Q<Label>("HealthStat");
+            _statLabels[EnumHeroStatType.DAMAGE] = _root.Q<Label>("DamageStat");
+            _statLabels[EnumHeroStatType.MOVEMENT_SPEED] = _root.Q<Label>("MovementSpeedStat");
             _upgradeButton = _root.Q<Button>("UpgradeButton");
             _upgradeButton.clicked += OnClick;
         }
@@ -35,39 +35,43 @@ namespace Presentation.Gameplay.View
         private void OnClick()
         {
             OnUpgradeButtonClick?.Invoke();
+            DoPunchAnimation(_upgradeButton, -0.02f);
         }
 
         void IUpgradeHeroStatsView.Refresh(int amount, EnumHeroStatType type)
         {
-            switch (type)
+            if (_statLabels.TryGetValue(type, out Label label))
             {
-                case EnumHeroStatType.HEALTH:
-                    _healthLabel.text = $"Health:{amount.ToString()}";
-                    DoPunchAnimation(_healthLabel);
-                    break;
-                case EnumHeroStatType.DAMAGE:
-                    _damageLabel.text = $"Damage:{amount.ToString()}";
-                    DoPunchAnimation(_damageLabel);
-                    break;
-                case EnumHeroStatType.MOVEMENT_SPEED:
-                    _msLabel.text = $"MS:{amount.ToString()}";
-                    DoPunchAnimation(_msLabel);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                label.text = FormatStat(type, amount);
+                DoPunchAnimation(label, 0.02f);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
+        
+        private static string FormatStat(EnumHeroStatType type, int value)
+        {
+            return type switch
+            {
+                EnumHeroStatType.HEALTH => $"Health: {value.ToString()}",
+                EnumHeroStatType.DAMAGE => $"Damage: {value.ToString()}",
+                EnumHeroStatType.MOVEMENT_SPEED => $"MS: {value.ToString()}",
+                _ => $"{type}: {value.ToString()}"
+            };
+        }
 
-        private static void DoPunchAnimation(VisualElement target)
+        private static void DoPunchAnimation(VisualElement target, float punchPower)
         {
             const float duration = 0.1f;
             float time = 0f;
             target.schedule.Execute(() =>
             {
                 time += Time.deltaTime;
-                float scale = 1f + 0.02f * Mathf.Sin(Mathf.PI * time / duration);
+                float scale = 1f + punchPower * Mathf.Sin(Mathf.PI * time / duration);
                 target.style.scale = new StyleScale(Vector2.one * scale);
-            }).Every(3).Until(() => time >= duration);
+            }).Every(6).Until(() => time >= duration);
         }
     }
 }

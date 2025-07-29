@@ -6,5 +6,10 @@ namespace Domain.Gameplay.Models
     {
         public EnumHeroStatType Type { get; set; } = EnumHeroStatType.MOVEMENT_SPEED;
         public ReactiveProperty<int> Amount { get; set; } = new();
+        
+        public HeroMovementSpeedStat(int amount)
+        {
+            Amount.Value = amount;
+        }
     }
 }

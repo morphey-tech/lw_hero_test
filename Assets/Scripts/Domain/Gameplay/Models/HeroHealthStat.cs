@@ -6,5 +6,10 @@ namespace Domain.Gameplay.Models
     {
         public EnumHeroStatType Type { get; set; } = EnumHeroStatType.HEALTH;
         public ReactiveProperty<int> Amount { get; set; } = new();
+
+        public HeroHealthStat(int amount)
+        {
+            Amount.Value = amount;
+        }
     }
 }
